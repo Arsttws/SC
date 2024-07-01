@@ -50,11 +50,58 @@ function toggleActiveClass(event) {
     const itemClass = event.target.className.split(' ')[1];
     console.log(itemClass);
 
+    const correspondingMainContentItem = document.querySelector('.main-content .main-content-item.item' + itemClass);
+    if (correspondingMainContentItem) {
+      correspondingMainContentItem.classList.add('active');
+      console.log(correspondingMainContentItem);
+      correspondingMainContentItem.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
+    }
     // Находим соответствующий элемент в 'main-content' и добавляем ему класс 'active'
     document.querySelector('.main-content .main-content-item.item' + itemClass).classList.add('active');
+
+    // Прокручиваем элемент в 'top-menu' так, чтобы он стал видимым и самым левым
+    event.target.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+}
+
+// Добавляем обработчики событий для элементов 'top-menu'
+document.querySelectorAll('.top-menu .items .item').forEach(function(item) {
+    item.addEventListener('click', toggleActiveClass);
+});
+
+  function syncScroll() {
+    const mainContentItems = document.querySelectorAll('.main-content-item');
+    let closestItem = null;
+    let closestDistance = Infinity;
+
+    mainContentItems.forEach(function(item) {
+      const rect = item.getBoundingClientRect();
+      const distance = Math.abs(rect.top);
+
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestItem = item;
+      }
+    });
+
+    if (closestItem) {
+      // Удаляем активный класс со всех элементов top-menu
+      document.querySelectorAll('.top-menu .items .item.active').forEach(function(activeItem) {
+        activeItem.classList.remove('active');
+      });
+
+      // Определяем класс текущего элемента
+      const itemClass = closestItem.className.split(' ')[1];
+      let last = itemClass.toString().slice(4);
+      console.log(last);
+
+      // Находим соответствующий элемент в 'top-menu' и добавляем ему класс 'active'
+      const correspondingMenuItem = document.getElementById('topMenuItem' + last);
+      correspondingMenuItem.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+      if (correspondingMenuItem) {
+        correspondingMenuItem.classList.add('active');
+      }
+    }
   }
 
-  // Добавляем обработчики событий для элементов 'top-menu'
-  document.querySelectorAll('.top-menu .items .item').forEach(function(item) {
-    item.addEventListener('click', toggleActiveClass);
-  });
+  // Добавляем обработчик события прокрутки для main-content
+  document.addEventListener('scroll', syncScroll);
