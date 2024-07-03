@@ -55,7 +55,17 @@ function toggleActiveClass(event) {
       setTimeout(() => {
         correspondingMainContentItem.classList.add('active');
         console.log(correspondingMainContentItem);
-        correspondingMainContentItem.scrollIntoView({behavior: 'smooth', block:'start'});
+        // correspondingMainContentItem.scrollIntoView({behavior: 'smooth', block:'start'});
+
+        let c = correspondingMainContentItem.getBoundingClientRect(),
+        scrolltop = c.top +  window.pageYOffset - 80,
+        scrollleft = document.body.scrollLeft + c.left;
+        console.log('top:' + scrolltop);
+
+        window.scrollTo({
+          top: scrolltop,
+          behavior: "smooth",
+        });
       })
     }
     // Находим соответствующий элемент в 'main-content' и добавляем ему класс 'active'
@@ -94,7 +104,6 @@ document.querySelectorAll('.top-menu .items .item').forEach(function(item) {
       // Определяем класс текущего элемента
       const itemClass = closestItem.className.split(' ')[1];
       let last = itemClass.toString().slice(4);
-      console.log(last);
 
       // Находим соответствующий элемент в 'top-menu' и добавляем ему класс 'active'
       const correspondingMenuItem = document.getElementById('topMenuItem' + last);
