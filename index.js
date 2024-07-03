@@ -52,9 +52,11 @@ function toggleActiveClass(event) {
 
     const correspondingMainContentItem = document.querySelector('.main-content .main-content-item.item' + itemClass);
     if (correspondingMainContentItem) {
-      correspondingMainContentItem.classList.add('active');
-      console.log(correspondingMainContentItem);
-      correspondingMainContentItem.scrollIntoView();
+      setTimeout(() => {
+        correspondingMainContentItem.classList.add('active');
+        console.log(correspondingMainContentItem);
+        correspondingMainContentItem.scrollIntoView({behavior: 'smooth', block:'start'});
+      })
     }
     // Находим соответствующий элемент в 'main-content' и добавляем ему класс 'active'
     document.querySelector('.main-content .main-content-item.item' + itemClass).classList.add('active');
