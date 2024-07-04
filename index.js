@@ -116,3 +116,15 @@ document.querySelectorAll('.top-menu .items .item').forEach(function(item) {
 
   // Добавляем обработчик события прокрутки для main-content
   document.addEventListener('scroll', syncScroll);
+
+const showMenuBtn = document.querySelector('.show-all-menu-items')
+const menuItems = document.querySelector('.top-menu')
+
+showMenuBtn.addEventListener('click', () => {
+  menuItems.classList.toggle('show-menu')
+  if(document.querySelector('.top-menu.show-menu')) {
+    showMenuBtn.textContent = '-'
+  } else {
+    showMenuBtn.textContent = '+'
+  }
+})
