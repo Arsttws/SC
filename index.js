@@ -52,9 +52,21 @@ function toggleActiveClass(event) {
 
     const correspondingMainContentItem = document.querySelector('.main-content .main-content-item.item' + itemClass);
     if (correspondingMainContentItem) {
-      correspondingMainContentItem.classList.add('active');
-      console.log(correspondingMainContentItem);
-      correspondingMainContentItem.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
+      setTimeout(() => {
+        correspondingMainContentItem.classList.add('active');
+        console.log(correspondingMainContentItem);
+        // correspondingMainContentItem.scrollIntoView({behavior: 'smooth', block:'start'});
+
+        let c = correspondingMainContentItem.getBoundingClientRect(),
+        scrolltop = c.top +  window.pageYOffset - 80,
+        scrollleft = document.body.scrollLeft + c.left;
+        console.log('top:' + scrolltop);
+
+        window.scrollTo({
+          top: scrolltop,
+          behavior: "smooth",
+        });
+      })
     }
     // Находим соответствующий элемент в 'main-content' и добавляем ему класс 'active'
     document.querySelector('.main-content .main-content-item.item' + itemClass).classList.add('active');
@@ -92,7 +104,6 @@ document.querySelectorAll('.top-menu .items .item').forEach(function(item) {
       // Определяем класс текущего элемента
       const itemClass = closestItem.className.split(' ')[1];
       let last = itemClass.toString().slice(4);
-      console.log(last);
 
       // Находим соответствующий элемент в 'top-menu' и добавляем ему класс 'active'
       const correspondingMenuItem = document.getElementById('topMenuItem' + last);
@@ -105,3 +116,15 @@ document.querySelectorAll('.top-menu .items .item').forEach(function(item) {
 
   // Добавляем обработчик события прокрутки для main-content
   document.addEventListener('scroll', syncScroll);
+
+const showMenuBtn = document.querySelector('.show-all-menu-items')
+const menuItems = document.querySelector('.top-menu')
+
+showMenuBtn.addEventListener('click', () => {
+  menuItems.classList.toggle('show-menu')
+  if(document.querySelector('.top-menu.show-menu')) {
+    showMenuBtn.textContent = '-'
+  } else {
+    showMenuBtn.textContent = '+'
+  }
+})
